@@ -1,0 +1,53 @@
+.landing-page {
+    margin: auto;
+    width: 100%;
+}
+
+.navbar {
+    background-color: transparent;
+    border-radius: 0;
+    padding-top: 25px;
+    margin-bottom: 15px;
+    z-index: 2;
+}
+
+.navbar-right {
+    left: auto;
+    right: 12px;
+}
+
+.navbar-nav {
+  font-size: 20px;
+  max-width: 20px;
+  background-color: transparent;
+  margin-top: -3px;
+  top: 0px;
+  position: relative;
+  margin-right: 3px;
+}
+
+.container {
+    z-index: 2;
+    position: relative;
+    padding-top: 53vh;
+}
+
+.page-header {
+    height: 60vh;
+    background-image: url('../../assets/img/cover.jpeg');
+    background-position: center center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.navbar-collapse {
+    -webkit-transform: translate3d(0px, 0, 0);
+    -moz-transform: translate3d(0px, 0, 0);
+    -o-transform: translate3d(0px, 0, 0);
+    -ms-transform: translate3d(0px, 0, 0);
+    transform: translate3d(0px, 0, 0);
+}
