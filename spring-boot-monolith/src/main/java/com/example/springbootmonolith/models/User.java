@@ -18,11 +18,26 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
-    @Column(name = "USER_NAME")
-    private String username;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<User> users;
+    @Column(name = "LAST_NAME")
+    private String lastName;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "GENDER")
+    private String gender;
+
+    @Column(name = "COUNTRY")
+    private String country;
+
+    @Column(name = "CITY")
+    private String city;
+
+    @Column(name = "PASSWORD")
+    private String password;
 }

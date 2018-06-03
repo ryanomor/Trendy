@@ -6,19 +6,11 @@ class Landing extends Component {
   render() {
     console.log(process.env);
     return (
-      <div className="landing-page">
+      <div className="landing-page background-filter">
 
-        <nav className="navbar">
-            <div className="collapse navbar-collapse">
-              <ul className="navbar-nav navbar-right">
-                <li>
-                  <Link to="/register">Sign up</Link>
-                </li>
-                <li>
-                  <Link to="/login">login</Link>
-                </li>
-              </ul>
-            </div>
+        <nav>
+          <Link to="/register">Sign up</Link>
+          <Link to="/login">login</Link>
         </nav>
 
         <div className="page-header header-filter">

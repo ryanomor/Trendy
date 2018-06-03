@@ -5,8 +5,8 @@ import javax.persistence.*;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
-@Entity @Table(name = "TASKS")
-public class Task {
+@Entity @Table(name = "FRIENDS")
+public class Friend {
     /*
     public Song(String title, String length, String artist) {
         this.title = title;
@@ -23,12 +23,17 @@ public class Task {
 //    @JoinColumn(name = "USER_NAME")
 //    private User user;
 
-    @Column(name = "USER_NAME")
-    private String username;
+//    @ManyToMany
+//    @PrimaryKeyJoinColumn(name = "USER_ID")
+//    private User user;
+//
+//    @ManyToMany
+//    @PrimaryKeyJoinColumn(name = "FRIEND_ID")
+//    private User friend;
 
-    @Column(name = "TASK")
-    private String task;
+    @Column(name = "USER_ID")
+    private Long userId;
 
-    @Column(name = "COMPLETED")
-    private int completed;
+    @Column(name = "FRIEND_ID")
+    private Long friendId;
 }

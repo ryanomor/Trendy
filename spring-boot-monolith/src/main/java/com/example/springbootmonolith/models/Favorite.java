@@ -5,10 +5,10 @@ import javax.persistence.*;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
-@Entity @Table(name = "TASKS")
-public class Task {
+@Entity @Table(name = "FAVORITES")
+public class Favorite {
     /*
-    public Song(String title, String length, String artist) {
+    public Song(String userId, String song, String artist, String img) {
         this.title = title;
         this.length = length;
         this.artist = artist;
@@ -23,12 +23,19 @@ public class Task {
 //    @JoinColumn(name = "USER_NAME")
 //    private User user;
 
-    @Column(name = "USER_NAME")
-    private String username;
+    @Column(name = "USER_ID")
+    private Long userId;
 
-    @Column(name = "TASK")
-    private String task;
+//    @ManyToOne
+//    @PrimaryKeyJoinColumn(name = "USER_ID")
+//    private User user;
 
-    @Column(name = "COMPLETED")
-    private int completed;
+    @Column(name = "SONG")
+    private String song;
+
+    @Column(name = "ARTIST")
+    private String artist;
+
+    @Column(name = "IMG")
+    private String img;
 }

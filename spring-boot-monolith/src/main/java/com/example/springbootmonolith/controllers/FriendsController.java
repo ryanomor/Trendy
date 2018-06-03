@@ -1,8 +1,8 @@
 package com.example.springbootmonolith.controllers;
 
 
-import com.example.springbootmonolith.models.Task;
-import com.example.springbootmonolith.repositories.TaskRepository;
+import com.example.springbootmonolith.models.Friend;
+import com.example.springbootmonolith.repositories.FriendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.HttpStatus;
@@ -12,38 +12,33 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class TasksController {
+public class FriendsController {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    @Autowired  // Injects instance of repository to the controller
+    private FriendRepository friendRepository;
 
-    @CrossOrigin(origins = "http://localhost:4200")
-
-    @GetMapping("/tasks")
-    public Iterable<Task> findAllTasks() {
-        return taskRepository.findAll();
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/friends/{userId}")
+    public List<Friend> findFriendsById(@PathVariable Long userId) {
+        return friendRepository.findByuserId(userId);
     }
 
-    @GetMapping("/tasks/{taskId}")
-    public Optional<Task> findTaskById(@PathVariable Long taskId) {
-        return taskRepository.findById(taskId);
-    }
-
-    @CrossOrigin(origins = "http://localhost:4200")
-
-    @GetMapping("/tasks/user/{username}")
-    public List<Task> findTasksByUsername(@PathVariable String username) {
-        return taskRepository.findTasksByUsername(username);
-    }
-
-    @DeleteMapping("/tasks/{taskId}")
-    public HttpStatus deleteTaskById(@PathVariable Long taskId) {
-        taskRepository.deleteById(taskId);
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/friends/{id}")
+    public HttpStatus deleteFriendById(@PathVariable Long id) {
+        friendRepository.deleteById(id);
         return HttpStatus.OK;
     }
 
-    @PostMapping("/tasks")
-    public Task createNewTask(@RequestBody Task newTask) {
-        return taskRepository.save(newTask);
+//    @DeleteMapping("/friends/{userId}/{friendId}")
+//    public HttpStatus deleteFriendById(@PathVariable Long userId, @PathVariable Long taskId) {
+//        friendRepository.deleteById(taskId);
+//        return HttpStatus.OK;
+//    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/friends")
+    public Friend createNewFriend(@RequestBody Friend newFriend) {
+        return friendRepository.save(newFriend);
     }
 }
