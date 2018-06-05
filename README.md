@@ -1,4 +1,4 @@
-# Todo App
+# Trendy App
 
 ## Quick start
 obtain an API key from [lastfm](www.last.fm/api/)  
