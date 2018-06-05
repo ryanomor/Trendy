@@ -84,11 +84,11 @@ class App extends Component {
 
         return (
             <Switch>
-                <Route exact path="/" component={Home} />
                 <Route path="/discover" render={this.renderDiscover} />
                 <Route path="/profile" render={this.renderProfile} />
                 <Route path="/login" render={this.renderLogin} />
                 <Route path="/register" render={this.renderSignup} />
+                <Route path="/" component={Home} />
             </Switch>
         );
     }
