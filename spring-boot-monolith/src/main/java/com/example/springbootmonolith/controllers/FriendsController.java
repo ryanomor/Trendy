@@ -17,13 +17,13 @@ public class FriendsController {
     @Autowired  // Injects instance of repository to the controller
     private FriendRepository friendRepository;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/friends/{userId}")
     public List<Friend> findFriendsById(@PathVariable Long userId) {
         return friendRepository.findByuserId(userId);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/friends/{id}")
     public HttpStatus deleteFriendById(@PathVariable Long id) {
         friendRepository.deleteById(id);
@@ -36,7 +36,7 @@ public class FriendsController {
 //        return HttpStatus.OK;
 //    }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/friends")
     public Friend createNewFriend(@RequestBody Friend newFriend) {
         return friendRepository.save(newFriend);

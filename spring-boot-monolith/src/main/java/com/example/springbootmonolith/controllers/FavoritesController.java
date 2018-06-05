@@ -17,14 +17,14 @@ public class FavoritesController {
     @Autowired  // Injects instance of repository to the controller
     private FavoriteRepository favoriteRepository;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
 
     @GetMapping("/faves/{userId}")
     public List<Favorite> getFavesByUserId(@PathVariable Long userId) {
         return favoriteRepository.findByuserId(userId);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
 
     @DeleteMapping("/faves/{faveId}")
     public HttpStatus deleteFaveById(@PathVariable Long faveId) {
@@ -32,7 +32,7 @@ public class FavoritesController {
         return HttpStatus.OK;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/faves")
     public Favorite createNewFave(@RequestBody Favorite newFave) {
         return favoriteRepository.save(newFave);

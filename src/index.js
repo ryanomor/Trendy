@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createBrowserHistory } from "history";
+import App from "./App";
+import { Router } from "react-router";
 
-console.log(process.env);
+import "assets/scss/material-kit-react.css";
+
+var hist = createBrowserHistory();
+
 ReactDOM.render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>, 
-    document.getElementById('root')
+  <Router history={hist}>
+    <App />
+  </Router>,
+  document.getElementById("root")
 );
-
-registerServiceWorker();
