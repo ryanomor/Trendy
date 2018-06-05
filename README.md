@@ -17,5 +17,3 @@ cd to the root directory:
 npm install  
 npm start
 ```
-
-rC8fnLOPk
