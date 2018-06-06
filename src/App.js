@@ -19,17 +19,17 @@ class App extends Component {
         dbService
             .getUserByEmail(newUser)
             .then(res => {
-                console.log(dbService.createUser(newUser))
-                //     .then(res => {
-                //         const user = res.data;
-                //         console.log(user);
-                //         this.setState({
-                //             user
-                //         })
-                //     })
-                //     .catch(err => {
-                //         console.log("Error:", err);
-                //     });
+                dbService.createUser(newUser)
+                    .then(res => {
+                        const user = res.data;
+                        localStorage.setItem("user", JSON.stringify(user));
+                        this.setState({
+                            user
+                        })
+                    })
+                    .catch(err => {
+                        console.log("Error:", err);
+                    });
             })
             .catch(err => {
                 console.log("Error:", err);

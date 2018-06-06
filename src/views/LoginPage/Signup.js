@@ -107,10 +107,11 @@ class Signup extends React.Component {
   }
 
   handleSubmit = event => {
-      event.preventDefault();
-      const { user } = this.state;
+    event.preventDefault();
+    const { user } = this.state;
+    console.log(user);
 
-      this.props.createUser(user);
+    this.props.createUser(user);
   }
 
   render() {

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const createUser = user => {
-    axios.post(`http://localhost:8080/users`, user);
+    return axios.post(`http://localhost:8080/users`, user);
 };
 
 const addFave = song => {
