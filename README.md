@@ -1,7 +1,13 @@
 # Trendy App
 
 ## Quick start
-obtain an API key from [lastfm](www.last.fm/api/)  
+obtain an API key from [lastfm](https://www.last.fm/api/account/create)  
+create a .env file in the root folder that looks like this:  
+``` Javascript
+NODE_PATH=./src
+REACT_APP_LASTFM_API_KEY=key from lastFM
+REACT_APP_LASTFM_SHARED_SECRET=secret from lastFM
+```
 save key into your .env file as REACT_APP_LASTFM_API_KEY=yourAPIKey  
 
 cd into spring-boot-monolith folder  

@@ -77,7 +77,7 @@ class ProfileNavbar extends Component {
                                     <Link 
                                         to="/"
                                         onClick={logout} 
-                                        style={{"color": "#333", ":hover": {"color": "#FFF"}}}
+                                        style={{"color": "#333"}} // hover color #FFF
                                     > Sign out </Link>
                                 ]}
                             />
