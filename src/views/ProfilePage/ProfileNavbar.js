@@ -74,7 +74,11 @@ class ProfileNavbar extends Component {
                                 }}
                                 dropdownList={[
                                     "Account",
-                                    "Sign out"
+                                    <Link 
+                                        to="/"
+                                        onClick={logout} 
+                                        style={{"color": "#333", ":hover": {"color": "#FFF"}}}
+                                    > Sign out </Link>
                                 ]}
                             />
                         </ListItem>

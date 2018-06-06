@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import * as Countries from "utils/Countries";
+import Countries from "utils/Countries";
 // material-ui components
 import Radio from "material-ui/Radio";
 import withStyles from "material-ui/styles/withStyles";
@@ -64,7 +64,6 @@ class Signup extends React.Component {
             this.setState({
                 user
             });
-
             return;
 
         case "last":
@@ -72,7 +71,6 @@ class Signup extends React.Component {
             this.setState({
                 user
             });
-
             return;
 
         case "email":
@@ -80,7 +78,6 @@ class Signup extends React.Component {
             this.setState({
                 user
             });
-
             return;
 
         case "pass":
@@ -88,7 +85,6 @@ class Signup extends React.Component {
             this.setState({
                 user
             });
-
             return;
 
         case "city":
@@ -96,7 +92,6 @@ class Signup extends React.Component {
             this.setState({
                 user
             });
-
             return;
 
         case "country":
@@ -104,7 +99,6 @@ class Signup extends React.Component {
             this.setState({
                 user
             });
-
             return;
         
         default:
@@ -121,7 +115,8 @@ class Signup extends React.Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const user = JSON.parse(localStorage.getItem("user"));
+    let user = localStorage.getItem("user");
+    user = user ? JSON.parse(user) : "";
 
     if (user) {
       return <Redirect to="/profile" />
@@ -230,9 +225,9 @@ class Signup extends React.Component {
                         fullWidth
                         margin="normal"
                         >
-                        {Countries.getCountries().sort().map((option, idx) => (
-                            <MenuItem key={idx} value={option}>
-                                {option}
+                        {Countries.countries.map((country, idx) => (
+                            <MenuItem key={idx} value={country}>
+                                {country}
                             </MenuItem>
                         ))}
                     </TextField>
@@ -247,56 +242,52 @@ class Signup extends React.Component {
                     }
                     >
                     <FormControlLabel
+                        label="M"
                         control={
-                        <Radio
-                            checked={this.state.user.gender === "M"}
-                            onChange={this.handleRadio}
-                            value="M"
-                            name="radio button enabled"
-                            aria-label="A"
-                            icon={
-                                <FiberManualRecord
-                                    className={classes.radioUnchecked}
-                                />
-                                }
-                            checkedIcon={
-                                <FiberManualRecord className={classes.radioChecked} />
-                                }
-                            classes={{
-                                checked: classes.radio
-                            }}
-                        />
+                            <Radio
+                                checked={this.state.user.gender === "M"}
+                                onChange={this.handleRadio}
+                                value="M"
+                                icon={
+                                    <FiberManualRecord
+                                        className={classes.radioUnchecked}
+                                    />
+                                    }
+                                checkedIcon={
+                                    <FiberManualRecord className={classes.radioChecked} />
+                                    }
+                                classes={{
+                                    checked: classes.radio
+                                }}
+                            />
                         }
                         classes={{
                             label: classes.label
                         }}
-                        label="M"
                     />
                     <FormControlLabel
+                        label="F"
                         control={
-                        <Radio
-                            checked={this.state.user.gender === "F"}
-                            onChange={this.handleRadio}
-                            value="F"
-                            name="radio button enabled"
-                            aria-label="A"
-                            icon={
-                            <FiberManualRecord
-                                className={classes.radioUnchecked}
+                            <Radio
+                                checked={this.state.user.gender === "F"}
+                                onChange={this.handleRadio}
+                                value="F"
+                                icon={
+                                <FiberManualRecord
+                                    className={classes.radioUnchecked}
+                                />
+                                }
+                                checkedIcon={
+                                <FiberManualRecord className={classes.radioChecked} />
+                                }
+                                classes={{
+                                checked: classes.radio
+                                }}
                             />
-                            }
-                            checkedIcon={
-                            <FiberManualRecord className={classes.radioChecked} />
-                            }
-                            classes={{
-                            checked: classes.radio
-                            }}
-                        />
                         }
                         classes={{
                         label: classes.label
                         }}
-                        label="F"
                     />
                     </div>
                     </CardBody>

@@ -1,5 +1,5 @@
 import React from "react";
-import * as lastFMService from './../../services/lastFMService';
+import lastFMService from './../../services/lastFMService';
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // material-ui components

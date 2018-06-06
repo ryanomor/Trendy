@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import * as dbService from "./services/dbService";
+import dbService from "./services/dbService";
 import Home from "views/LandingPage/Home";
 import Discover from "views/Discover/Discover";
 import Profile from "views/ProfilePage/Profile";
@@ -19,15 +19,17 @@ class App extends Component {
         dbService
             .getUserByEmail(newUser)
             .then(res => {
-                if (!res.data.user) {
-                    dbService.createUser(newUser)
-                        .then(res => {
-                            const user = res.data
-                            this.setState({
-                                user: newUser
-                            })
-                        });
-                }
+                console.log(dbService.createUser(newUser))
+                //     .then(res => {
+                //         const user = res.data;
+                //         console.log(user);
+                //         this.setState({
+                //             user
+                //         })
+                //     })
+                //     .catch(err => {
+                //         console.log("Error:", err);
+                //     });
             })
             .catch(err => {
                 console.log("Error:", err);
@@ -39,8 +41,8 @@ class App extends Component {
             .getUserByEmail(currUser)
             .then(res => {
                 const user = res.data;
-                
-                if(user.password === currUser.password) {
+
+                if (user.password === currUser.password) {
                     localStorage.setItem("user", JSON.stringify(user));
 
                     this.setState({
@@ -62,25 +64,23 @@ class App extends Component {
     }
 
     renderDiscover = () => {
-      return <Discover />
+        return <Discover />
     }
 
     renderProfile = () => {
-      return <Profile logout={this.logout} />
+        return <Profile logout={this.logout} />
     }
 
     renderLogin = () => {
-      return <Login setUser={this.setUser} />
+        return <Login setUser={this.setUser} />
     }
 
     renderSignup = () => {
-      return <Signup createUser={this.createUser} />
+        return <Signup createUser={this.createUser} />
     }
 
     render() {
         const { user } = this.state;
-        console.log("User State:", user);
-        localStorage.key(0) ? console.log("User Storage:", JSON.parse(localStorage.getItem("user"))) : "";
 
         return (
             <Switch>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import * as lastFMService from './../../services/lastFMService';
+import lastFMService from './../../services/lastFMService';
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // material-ui components
@@ -26,28 +26,30 @@ import UserSection from "./Sections/UserSection.jsx";
 const dashboardRoutes = [];
 
 class Home extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            tracks: []
-        }
-    }
+  constructor() {
+      super();
+      this.state = {
+          tracks: []
+      }
+  }
 
-    componentDidMount() {
-        lastFMService.getTopTracks()
-            .then(res => {
-                console.log(res.data.tracks);
-                this.setState({
-                    tracks: res.data.tracks.track
-                });
-            })
-            .catch(err => {
-                console.log("Error:", err);
-            })
-    }
+  componentDidMount() {
+    lastFMService.getTopTracks()
+      .then(res => {
+          console.log(res.data.tracks);
+          this.setState({
+              tracks: res.data.tracks.track
+          });
+      })
+      .catch(err => {
+          console.log("Error:", err);
+      });
+  }
 
   render() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    let user = localStorage.getItem("user");
+    user = user ? JSON.parse(user) : "";
+
     if (user) {
       return <Redirect to="/profile" />
     }
@@ -71,7 +73,7 @@ class Home extends React.Component {
           <div className={classes.container}>
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
-                <h1 className={classes.title}>Your Story Starts With Us.</h1>
+                <h1 className={classes.title}>Your Journey Starts Here</h1>
                 <h4>
                   Discover new music and artists based on your interests. <br />
                   Connect with other users with similar tastes in music. <br />

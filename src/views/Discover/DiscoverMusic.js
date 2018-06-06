@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import * as dbService from "services/dbService";
+import dbService from "services/dbService";
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 // material-ui components
@@ -17,30 +17,28 @@ import IconButton from "components/CustomButtons/IconButton.jsx";
 import userStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
 class MusicSection extends React.Component {
-    addFav = index => {
-        const userId = JSON.parse(localStorage.getItem("user")).id;
-        const { tracks } = this.props;
-        const track = tracks[index];
+  addFav = index => {
+    const userId = JSON.parse(localStorage.getItem("user")).id;
+    const track = this.props.tracks[index];
 
-        const song = {
-            userId,
-            song: track.name,
-            artist: track.artist.name,
-            img: track.image[2]["#text"]
-        };
+    const song = {
+      userId,
+      song: track.name,
+      artist: track.artist.name,
+      img: track.image[2]["#text"]
+    };
 
-        dbService.addFave(song)
-            .then(res => {
-                console.log("Added to user's faves!")
-            })
-            .catch(err => {
-                console.log("Error:", err);
-            })
-    }
+    dbService.addFave(song)
+      .then(res => {
+        console.log("Added to user's faves!", res.data);
+      })
+      .catch(err => {
+        console.log("Error:", err);
+      })
+  }
     
   render() {
     const { classes, tracks } = this.props;
-    // const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
     const imageClasses = classNames(
       classes.imgRaised,
       classes.imgRoundedCircle,
@@ -61,27 +59,27 @@ class MusicSection extends React.Component {
         <div className={classes.section}>
           <GridContainer justify="center">
             {tracks.map((track, idx) =>
-            <GridItem key={idx} xs={12} sm={12} md={4}>
-                <Card plain>
-                <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+              <GridItem key={idx} xs={12} sm={12} md={4}>
+                  <Card plain>
+                  <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
                     <img src={track.image[2]['#text']} alt={`top-track-${idx}`} className={imageClasses} />
-                </GridItem>
+                  </GridItem>
                     <h4 className={classes.cardTitle}>
-                    {track.name}
-                    <br />
-                    <small className={classes.smallTitle}> {track.artist.name} </small>
+                      {track.name}
+                      <br />
+                      <small className={classes.smallTitle}> {track.artist.name} </small>
                     </h4>
                     <CardBody>
                     <p className={classes.description}>
-                        {track.listeners} listeners <br />
-                        {track.playcount} plays
+                      {track.listeners} listeners <br />
+                      {track.playcount} plays
                     </p>
                     <IconButton color="primary" onClick={e => this.addFav(idx)}>
-                        <Favorite className={classes.icons} />
+                      <Favorite className={classes.icons} />
                     </IconButton>
                     </CardBody>
-                </Card>
-            </GridItem>
+                  </Card>
+              </GridItem>
             )}
           </GridContainer>
         </div>

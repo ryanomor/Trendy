@@ -79,7 +79,8 @@ class Login extends React.Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const user = JSON.parse(localStorage.getItem("user"));
+    let user = localStorage.getItem("user");
+    user = user ? JSON.parse(user) : "";
 
     if (user) {
       return <Redirect to="/profile" />

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import * as dbService from "./../../services/dbService";
+import dbService from "./../../services/dbService";
 // components
 import ProfileNavbar from "./ProfileNavbar";
 import ProfileBody from "./ProfileBody";
@@ -17,7 +17,8 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    const user = JSON.parse(localStorage.getItem("user")); // Get user obj from local storage
+    let user = localStorage.getItem("user"); // Get user obj from local storage
+    user = user ? JSON.parse(user) : "";
 
     dbService.getUsersFriends(user)
       .then(res => {
@@ -51,7 +52,8 @@ class Profile extends Component {
   }
 
   render() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    let user = localStorage.getItem("user");
+    user = user ? JSON.parse(user) : "";
 
     if (!user) {
         return <Redirect to="/" />
