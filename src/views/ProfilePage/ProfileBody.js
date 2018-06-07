@@ -122,8 +122,10 @@ class ProfileBody extends Component {
                                             tabIcon: People,
                                             tabContent: (
                                                 <GridContainer justify="center">
-                                                {friends.map((friend, idx) =>
-                                                <GridItem key={idx} xs={12} sm={12} md={4}>
+                                                {friends.length < 1 ?
+                                                    "You don't have any favorites yet" :
+                                                    friends.map((friend, idx) =>
+                                                    <GridItem key={idx} xs={12} sm={12} md={4}>
                                                       <Card plain>
                                                         {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
                                                           <img src={Users[idx]} alt={`friend-${idx}`} className={imageClasses} />
@@ -136,7 +138,7 @@ class ProfileBody extends Component {
                                                           </h4>
                                                           </CardBody>
                                                       </Card>
-                                                </GridItem>
+                                                    </GridItem>
                                                 )}
                                               </GridContainer>
                                             )

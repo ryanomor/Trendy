@@ -26,7 +26,6 @@ class ProfileNavbar extends Component {
                         <ListItem className={classes.listItem}>
                             <Button
                                 className={classes.navLink}
-                                onClick={e => <Redirect to="/discover" />}
                                 color="transparent"
                             >
                                 <Link to="/discover" className={classes.link} style={{"color": "white"}}>
@@ -36,12 +35,12 @@ class ProfileNavbar extends Component {
                         </ListItem>
                         <ListItem className={classes.listItem}>
                             <Button
-                                href="#pablo"
                                 className={classes.navLink}
-                                onClick={e => e.preventDefault()}
                                 color="transparent"
                             >
+                            <Link to="/profile" className={classes.link} style={{"color": "white"}}>
                                 Favorites
+                            </Link>
                     </Button>
                         </ListItem>
                         <ListItem className={classes.listItem}>
@@ -59,7 +58,6 @@ class ProfileNavbar extends Component {
                                 left
                                 caret={false}
                                 hoverColor="primary"
-                                onClick={() => logout()}
                                 buttonText={
                                     <img
                                         src={profileImage}
@@ -74,11 +72,10 @@ class ProfileNavbar extends Component {
                                 }}
                                 dropdownList={[
                                     "Account",
-                                    <Link 
-                                        to="/"
-                                        onClick={logout} 
-                                        style={{"color": "#333"}} // hover color #FFF
-                                    > Sign out </Link>
+                                    <div
+                                        onClick={logout}
+                                        // className={classes.navbarLink}
+                                    > Sign out </div>
                                 ]}
                             />
                         </ListItem>
