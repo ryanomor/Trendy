@@ -54,7 +54,8 @@ class ProfileBody extends Component {
                                     </div>
                                     <div className={classes.name}>
                                         <h3 className={classes.title}>{`${user.firstName} ${user.lastName}`}</h3>
-                                        <h6>DESIGNER</h6>
+                                        <h4 className={classes.description}>{`${user.city}, ${user.country}`}</h4>
+                                        <h5>DESIGNER</h5>
                                         <IconButton
                                             color="transparent"
                                             className={classes.margin5}
@@ -99,20 +100,22 @@ class ProfileBody extends Component {
                                             {favorites.length < 1 ? 
                                                 "You don't have any favorites yet" :
                                                 favorites.map((Favorite, idx) =>
-                                                <GridItem key={idx} xs={12} sm={12} md={4}>
-                                                    <Card plain>
-                                                        {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
-                                                        <img src={Favorite.img} alt={`Favorite-${idx}`} className={imageClasses} />
-                                                        {/* </GridItem> */}
-                                                        <CardBody>
-                                                        <h4 className={classes.cardTitle}>
-                                                            {Favorite.song}
-                                                            <br />
-                                                            <small className={classes.smallTitle}> {`${Favorite.artist}`} </small>
-                                                        </h4>
-                                                        </CardBody>
-                                                    </Card>
-                                                </GridItem>
+                                                    <GridItem key={idx} xs={12} sm={12} md={4}>
+                                                        <Card plain>
+                                                            <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+                                                            <img src={Favorite.img} alt={`Favorite-${idx}`} className={imageClasses} />
+                                                            </GridItem>
+                                                            {/* <CardBody> */}
+                                                            <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+                                                            <h4 className={classes.cardTitle}>
+                                                                {Favorite.song}
+                                                                <br />
+                                                                <small className={classes.smallTitle}> {`${Favorite.artist}`} </small>
+                                                            </h4>
+                                                            </GridItem>
+                                                            {/* </CardBody> */}
+                                                        </Card>
+                                                    </GridItem>
                                             )}
                                             </GridContainer>
                                         )
@@ -125,20 +128,20 @@ class ProfileBody extends Component {
                                                 {friends.length < 1 ?
                                                     "You don't have any favorites yet" :
                                                     friends.map((friend, idx) =>
-                                                    <GridItem key={idx} xs={12} sm={12} md={4}>
-                                                      <Card plain>
-                                                        {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
-                                                          <img src={Users[idx]} alt={`friend-${idx}`} className={imageClasses} />
-                                                        {/* </GridItem> */}
-                                                          <CardBody>
-                                                          <h4 className={classes.cardTitle}>
-                                                            {friend.firstName}
-                                                            <br />
-                                                            <small className={classes.smallTitle}> {`${friend.city}, ${friend.country}`} </small>
-                                                          </h4>
-                                                          </CardBody>
-                                                      </Card>
-                                                    </GridItem>
+                                                        <GridItem key={idx} xs={12} sm={12} md={4}>
+                                                        <Card plain>
+                                                            {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
+                                                            <img src={Users[idx]} alt={`friend-${idx}`} className={imageClasses} />
+                                                            {/* </GridItem> */}
+                                                            <CardBody>
+                                                            <h4 className={classes.cardTitle}>
+                                                                {friend.firstName}
+                                                                <br />
+                                                                <small className={classes.smallTitle}> {`${friend.city}, ${friend.country}`} </small>
+                                                            </h4>
+                                                            </CardBody>
+                                                        </Card>
+                                                        </GridItem>
                                                 )}
                                               </GridContainer>
                                             )

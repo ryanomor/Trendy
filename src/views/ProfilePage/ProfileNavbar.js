@@ -74,7 +74,6 @@ class ProfileNavbar extends Component {
                                     "Account",
                                     <div
                                         onClick={logout}
-                                        // className={classes.navbarLink}
                                     > Sign out </div>
                                 ]}
                             />

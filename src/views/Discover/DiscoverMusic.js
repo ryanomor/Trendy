@@ -74,7 +74,11 @@ class MusicSection extends React.Component {
                       {track.listeners} listeners <br />
                       {track.playcount} plays
                     </p>
-                    <IconButton color="primary" onClick={e => this.addFav(idx)}>
+                    <IconButton color="primary" onClick={e => {
+                      console.log(e.target.color, this);
+                      e.target.color= e.target.color === "rose" ? "primary" : "rose";
+                      this.addFav(idx);
+                    }}>
                       <Favorite className={classes.icons} />
                     </IconButton>
                     </CardBody>

@@ -52,6 +52,7 @@ export default {
     getUserById,
     getUserByEmail,
     getUsersFriends,
+    getFriendById,
     getUsersFavorites,
     deleteFavorite,
     deleteUsersFriend

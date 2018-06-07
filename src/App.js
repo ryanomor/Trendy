@@ -64,7 +64,7 @@ class App extends Component {
     }
 
     renderDiscover = () => {
-        return <Discover />
+        return <Discover logout={this.logout} />
     }
 
     renderProfile = () => {

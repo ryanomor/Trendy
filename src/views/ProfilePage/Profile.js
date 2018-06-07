@@ -58,7 +58,7 @@ class Profile extends Component {
     if (!user) {
         return <Redirect to="/" />
     }
-    console.log(this.state);
+    
     const { userFavorites, friendship, friendList } = this.state;
 
     return(

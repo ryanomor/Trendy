@@ -51,12 +51,6 @@ const navbarsStyle = theme => ({
     top: "4px",
     borderRadius: "50%",
     marginLeft: "5px"
-  },
-  navbarLink: {
-    "&:hover": {
-      color: "#FFF"
-    },
-    color: "#333",
   }
 });
 

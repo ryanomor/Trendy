@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect, Switch, Route } from "react-router-dom";
 import lastFMService from './../../services/lastFMService';
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -20,33 +21,43 @@ import DiscoverMusic from "./DiscoverMusic";
 import ProfileNavbar from "../ProfilePage/ProfileNavbar";
 
 class Discover extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            tracks: []
-        }
-    }
+  constructor() {
+      super();
+      this.state = {
+          tracks: []
+      }
+  }
 
-    componentDidMount() {
-        lastFMService.getTopTracks()
-            .then(res => {
-                console.log(res.data.tracks);
-                this.setState({
-                    tracks: res.data.tracks.track
-                });
-            })
-            .catch(err => {
-                console.log("Error:", err);
-            })
-    }
+  componentDidMount() {
+      lastFMService.getTopTracks()
+          .then(res => {
+              console.log(res.data.tracks);
+              this.setState({
+                  tracks: res.data.tracks.track
+              });
+          })
+          .catch(err => {
+              console.log("Error:", err);
+          })
+  }
+
+  renderDicoverMusicComponent = () => {
+    return <DiscoverMusic tracks={this.state.tracks} />
+  }
 
   render() {
-    const { classes } = this.props;
-    const { tracks } = this.state;
+    let user = localStorage.getItem("user");
+    user = user ? JSON.parse(user) : "";
+
+    if (!user) {
+        return <Redirect to="/" />
+    }
+
+    const { classes, logout } = this.props;
     
     return (
       <div>
-        <ProfileNavbar />
+        <ProfileNavbar logout={logout} />
         <Parallax filter image={require("assets/img/cover.jpeg")}>
           <div className={classes.container}>
             <GridContainer>
@@ -58,7 +69,9 @@ class Discover extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
-            <DiscoverMusic tracks={tracks} />
+          <Switch>
+            <Route to="/discover" render={this.renderDicoverMusicComponent} />
+          </Switch>
           </div>
         </div>
         <Footer />
