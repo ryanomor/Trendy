@@ -15,6 +15,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import IconButton from "components/CustomButtons/IconButton.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 import CardBody from "components/Card/CardBody.jsx";
+import Badge from "components/Badge/Badge.jsx";
 import Card from "components/Card/Card.jsx";
 
 import studio1 from "assets/img/examples/studio-1.jpg";
@@ -33,7 +34,7 @@ import profilePageStyle from "assets/jss/material-kit-react/views/profilePage.js
 
 class ProfileBody extends Component {
     render() {
-        const { classes, user, friends, favorites } = this.props;
+        const { classes, user, friends, favorites, unFriend, unFavorite } = this.props;
         const imageClasses = classNames(
             classes.imgRaised,
             classes.imgRoundedCircle,
@@ -102,18 +103,21 @@ class ProfileBody extends Component {
                                                 favorites.map((Favorite, idx) =>
                                                     <GridItem key={idx} xs={12} sm={12} md={4}>
                                                         <Card plain>
-                                                            <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                                                            <img src={Favorite.img} alt={`Favorite-${idx}`} className={imageClasses} />
-                                                            </GridItem>
-                                                            {/* <CardBody> */}
-                                                            <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                                                            <h4 className={classes.cardTitle}>
-                                                                {Favorite.song}
-                                                                <br />
-                                                                <small className={classes.smallTitle}> {`${Favorite.artist}`} </small>
-                                                            </h4>
-                                                            </GridItem>
-                                                            {/* </CardBody> */}
+                                                            <CardBody>
+                                                                <CardBody>
+                                                                {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
+                                                                <img src={Favorite.img} alt={`Favorite-${idx}`} className={imageClasses} />
+                                                                </CardBody>
+                                                                {/* </GridItem> */}
+                                                                {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
+                                                                <h4 className={classes.cardTitle}>
+                                                                    {Favorite.song}
+                                                                    <br />
+                                                                    <small className={classes.smallTitle}> {`${Favorite.artist}`} </small>
+                                                                </h4>
+                                                                <Badge color="danger" style={{"cursor": "pointer"}} onClick={e => unFavorite(idx)}> remove </Badge>
+                                                                {/* </GridItem> */}
+                                                            </CardBody>
                                                         </Card>
                                                     </GridItem>
                                             )}
@@ -129,18 +133,21 @@ class ProfileBody extends Component {
                                                     "You don't have any favorites yet" :
                                                     friends.map((friend, idx) =>
                                                         <GridItem key={idx} xs={12} sm={12} md={4}>
-                                                        <Card plain>
-                                                            {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
-                                                            <img src={Users[idx]} alt={`friend-${idx}`} className={imageClasses} />
-                                                            {/* </GridItem> */}
-                                                            <CardBody>
-                                                            <h4 className={classes.cardTitle}>
-                                                                {friend.firstName}
-                                                                <br />
-                                                                <small className={classes.smallTitle}> {`${friend.city}, ${friend.country}`} </small>
-                                                            </h4>
-                                                            </CardBody>
-                                                        </Card>
+                                                            <Card plain>
+                                                                <CardBody>
+                                                                    <CardBody>
+                                                                        {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
+                                                                        <img src={friend.gender === "M" ? Users.maleUsers[1] : Users.femaleUsers[idx]} alt={`friend-${idx}`} className={imageClasses} />
+                                                                        {/* </GridItem> */}
+                                                                    </CardBody>
+                                                                    <h4 className={classes.cardTitle}>
+                                                                        {friend.firstName}
+                                                                        <br />
+                                                                        <small className={classes.smallTitle}> {`${friend.city}, ${friend.country}`} </small>
+                                                                    </h4>
+                                                                    <Badge color="danger" style={{"cursor": "pointer"}} onClick={e => unFriend(idx)}> remove </Badge>
+                                                                </CardBody>
+                                                            </Card>
                                                         </GridItem>
                                                 )}
                                               </GridContainer>

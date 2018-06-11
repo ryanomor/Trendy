@@ -5,9 +5,6 @@ import lastFMService from './../../services/lastFMService';
 import classNames from "classnames";
 // material-ui components
 import withStyles from "material-ui/styles/withStyles";
-
-// @material-ui/icons
-
 // core components
 import Footer from "components/Footer/Footer.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -18,27 +15,32 @@ import discoverPageStyle from "assets/jss/material-kit-react/views/landingPage.j
 
 // Sections for this page
 import DiscoverMusic from "./DiscoverMusic";
+import DiscoverSearch from "./DiscoverSearch";
 import ProfileNavbar from "../ProfilePage/ProfileNavbar";
 
 class Discover extends React.Component {
   constructor() {
       super();
       this.state = {
-          tracks: []
+        tracks: [],
+        selectedOption: {
+          option: "",
+          value: ""
+        },
       }
   }
 
   componentDidMount() {
-      lastFMService.getTopTracks()
-          .then(res => {
-              console.log(res.data.tracks);
-              this.setState({
-                  tracks: res.data.tracks.track
-              });
-          })
-          .catch(err => {
-              console.log("Error:", err);
-          })
+    lastFMService.getTopTracks()
+        .then(res => {
+            console.log(res.data.tracks);
+            this.setState({
+                tracks: res.data.tracks.track
+            });
+        })
+        .catch(err => {
+            console.log("Error:", err);
+        })
   }
 
   renderDicoverMusicComponent = () => {
@@ -65,10 +67,11 @@ class Discover extends React.Component {
                 <h1 className={classes.title}> Search New Music </h1>
               </GridItem>
             </GridContainer>
-          </div>
+          </div> 
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
+          <DiscoverSearch />
           <Switch>
             <Route to="/discover" render={this.renderDicoverMusicComponent} />
           </Switch>

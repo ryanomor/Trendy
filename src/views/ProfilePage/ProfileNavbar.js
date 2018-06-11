@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 // material-ui components
 import List from "material-ui/List";
 import ListItem from "material-ui/List/ListItem";

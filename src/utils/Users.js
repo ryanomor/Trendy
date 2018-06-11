@@ -10,4 +10,12 @@ import user9 from "assets/img/faces/card-profile2-square.jpg";
 
 const users = [user1, user2, user3, user4, user5, user6, user7, user8, user9];
 
-export default users;
+const maleUsers = [user8, user3, user4];
+
+const femaleUsers = [user1, user2, user5, user6, user7, user9];
+
+export default {
+    users,
+    maleUsers,
+    femaleUsers
+};

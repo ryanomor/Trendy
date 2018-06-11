@@ -51,6 +51,39 @@ class Profile extends Component {
       })
   }
 
+  unFriend = index => {
+    let { friendship, friendList } = this.state;
+
+    dbService.deleteUsersFriend(friendship[index])
+      .then(res => {
+        console.log("Unfriended", friendList[index].firstName);
+
+        friendList = friendList.filter((friend, idx) => idx !== index);
+        this.setState({ friendList });
+      })
+      .catch(err => {
+        console.log("Error:", err);
+      });
+    console.log("Unfriending... :(");
+  }
+
+  unFavorite = index => {
+    let { userFavorites } = this.state;
+
+    dbService.deleteFavorite(userFavorites[index])
+      .then(res => {
+        console.log("Unfavorited", userFavorites[index].song);
+
+        userFavorites = userFavorites.filter((favorite, idx) => idx !== index);
+        this.setState({ userFavorites });
+      })
+      .catch(err => {
+        console.log("Error:", err);
+      });
+
+    console.log("Unfavoriting... :(");
+  }
+
   render() {
     let user = localStorage.getItem("user");
     user = user ? JSON.parse(user) : "";
@@ -59,7 +92,7 @@ class Profile extends Component {
         return <Redirect to="/" />
     }
     
-    const { userFavorites, friendship, friendList } = this.state;
+    const { userFavorites, friendList } = this.state;
 
     return(
       <div>
@@ -70,6 +103,8 @@ class Profile extends Component {
           user={user}
           friends={friendList}
           favorites={userFavorites}
+          unFriend={this.unFriend}
+          unFavorite={this.unFavorite}
         />
         <Footer />
       </div>

@@ -26,7 +26,7 @@ class UserSection extends React.Component {
         <h2 className={classes.title}> Meet new friends  </h2>
         <div>
           <GridContainer>
-            {Users.map((user, idx) =>
+            {Users.users.map((user, idx) =>
               <GridItem key={idx} xs={12} sm={12} md={4}>
                 <Card plain>
                   <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>

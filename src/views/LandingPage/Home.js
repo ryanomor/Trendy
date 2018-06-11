@@ -5,9 +5,6 @@ import lastFMService from './../../services/lastFMService';
 import classNames from "classnames";
 // material-ui components
 import withStyles from "material-ui/styles/withStyles";
-
-// @material-ui/icons
-
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
@@ -21,15 +18,13 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 // Sections for this page
 import MusicSection from "./Sections/MusicSection.jsx";
 import UserSection from "./Sections/UserSection.jsx";
-// import WorkSection from "./Sections/WorkSection.jsx";
-
-const dashboardRoutes = [];
 
 class Home extends React.Component {
   constructor() {
       super();
       this.state = {
-          tracks: []
+          tracks: [],
+          currPage: 1
       }
   }
 
@@ -46,6 +41,19 @@ class Home extends React.Component {
       });
   }
 
+  handleClick = number => {
+    let { currPage } = this.state;
+    if (number === "PREV" && currPage > 1) {
+      currPage--;
+      this.setState({ currPage });
+    } else if (number === "NEXT" && currPage < 5) {
+      currPage++;
+      this.setState({ currPage });
+    } else {
+      this.setState({ currPage: number });
+    }
+  }
+
   render() {
     let user = localStorage.getItem("user");
     user = user ? JSON.parse(user) : "";
@@ -54,13 +62,12 @@ class Home extends React.Component {
       return <Redirect to="/profile" />
     }
     const { classes, ...rest } = this.props;
-    const { tracks } = this.state;
+    const { tracks, currPage } = this.state;
     
     return (
       <div>
         <Header
           color="transparent"
-          routes={dashboardRoutes}
           rightLinks={<HeaderLinks />}
           fixed
           changeColorOnScroll={{
@@ -85,7 +92,7 @@ class Home extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
-            <MusicSection tracks={tracks} />
+            <MusicSection activePage={currPage} tracks={tracks} togglePage={this.handleClick}/>
             <UserSection />
           </div>
         </div>

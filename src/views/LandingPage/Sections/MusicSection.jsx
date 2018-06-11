@@ -5,6 +5,7 @@ import withStyles from "material-ui/styles/withStyles";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // core components
+import Paginations from "components/Pagination/Pagination.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import CardBody from "components/Card/CardBody.jsx";
@@ -14,7 +15,7 @@ import userStyle from "assets/jss/material-kit-react/views/landingPageSections/t
 
 class MusicSection extends React.Component {
   render() {
-    const { classes, tracks } = this.props;
+    const { classes, tracks, activePage, togglePage } = this.props;
     // const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
     const imageClasses = classNames(
       classes.imgRaised,
@@ -57,6 +58,19 @@ class MusicSection extends React.Component {
               </Link>
             </GridItem>
             )}
+            <Paginations
+                  color="info"
+                  pages={[
+                    { text: "PREV" },
+                    { active: activePage === 1, text: 1 },
+                    { active: activePage === 2, text: 2 },
+                    { active: activePage === 3, text: 3 },
+                    { active: activePage === 4, text: 4 },
+                    { active: activePage === 5, text: 5 },
+                    { text: "NEXT" }
+                  ]}
+                  onClick={togglePage}
+                />
           </GridContainer>
         </div>
       </div>
