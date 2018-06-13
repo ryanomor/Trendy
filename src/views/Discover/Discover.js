@@ -90,7 +90,8 @@ class Discover extends React.Component {
         lastFMService.getTopTracksByTrack(selectedOption.value)
           .then(res => {
             this.setState({
-              albums: res.data.results.trackmatches.track
+              albums: res.data.results.trackmatches.track,
+              currPage
             });
           })
           .catch(err => { console.log("Error:", err); });
@@ -100,7 +101,6 @@ class Discover extends React.Component {
       case "Album":
         lastFMService.getTopTracksByAlbum(selectedOption.value, currPage)
           .then(res => {
-            console.log(res.data.results);
             this.setState({
               albums: res.data.results.albummatches.album,
               currPage
@@ -138,25 +138,58 @@ class Discover extends React.Component {
   }
 
   addFav = index => {
+    const { tracks, albums } = this.state;
     const userId = JSON.parse(localStorage.getItem("user")).id;
-    const track = this.state.tracks[index];
-    let trackTags;
-    
-    lastFMService.getTrackTags(track)
-      .then(res => {
-        if (!res.data.error) {
-          trackTags = res.data.toptags.tag
-            .filter(tag => !!Genres[tag.name.toLowerCase()])
-            .map(tag => tag.name.toLowerCase());
-        }
+    const track = tracks.length > 0 ? tracks[index] : albums[index];
+    let tags;
+
+    console.log("Track:", track.artist.name);
+
+    track.length > 0
+      ? lastFMService.getTrackTags(track)
+          .then(res => {
+            console.log("tags for track");
+            if (!res.data.error) {
+              tags = res.data.toptags.tag
+                .filter(tag => !!Genres[tag.name.toLowerCase()])
+                .map(tag => tag.name.toLowerCase());
+            }
+
+            const song = {
+              userId,
+              song: track.name,
+              artist: track.artist.name || track.artist,
+              img: track.image[2]["#text"],
+              url: track.url,
+              tags: tags ? tags.join(",") : ""
+            };
+        
+            dbService.addFave(song)
+              .then(res => {
+                console.log("Added to user's faves!", res.data);
+              })
+              .catch(err => {
+                console.log("Error:", err);
+              })
+          })
+          .catch(err => { console.log("Error:", err) })
+      : lastFMService.getAlbumTags(track)
+        .then(res => {
+          console.log("tags for album");
+          if (!res.data.error) {
+            tags = res.data.toptags.tag
+              .filter(tag => !!Genres[tag.name.toLowerCase()])
+              .map(tag => tag.name.toLowerCase());
+          }
+      
         
         const song = {
           userId,
           song: track.name,
-          artist: track.artist.name,
+          artist: track.artist.name || track.artist,
           img: track.image[2]["#text"],
           url: track.url,
-          tags: trackTags.join(",")
+          tags: tags ? tags.join(",") : ""
         };
     
         dbService.addFave(song)
@@ -171,7 +204,8 @@ class Discover extends React.Component {
   }
 
   deleteFav = index => {
-    const track = this.state.tracks[index];
+    const { tracks, albums } = this.state;
+    const track = tracks.length > 0 ? tracks[index] : albums[index];
     const user = JSON.parse(localStorage.getItem("user"));
 
     dbService.getUsersFavorites(user)
@@ -196,7 +230,6 @@ class Discover extends React.Component {
     const { name, value } = e.target;
 
     selectedOption[name] = value;
-    console.log(selectedOption);
 
     this.setState({ selectedOption })
   }
@@ -211,7 +244,8 @@ class Discover extends React.Component {
         lastFMService.getTopTracksByGenre(selectedOption.value)
           .then(res => {
             this.setState({
-              tracks: res.data.tracks.track
+              tracks: res.data.tracks.track,
+              albums: []
             });
           })
           .catch(err => { console.log("Error:", err); });
@@ -222,7 +256,8 @@ class Discover extends React.Component {
         lastFMService.getTopTracksByArtist(selectedOption.value)
           .then(res => {
             this.setState({
-              tracks: res.data.toptracks.track
+              tracks: res.data.toptracks.track,
+              albums: []
             });
           })
           .catch(err => { console.log("Error:", err); });
@@ -232,8 +267,10 @@ class Discover extends React.Component {
       case "Track":
         lastFMService.getTopTracksByTrack(selectedOption.value)
           .then(res => {
+            console.log(res.data.results.trackmatches.track);
             this.setState({
-              albums: res.data.results.trackmatches.track
+              tracks: res.data.results.trackmatches.track,
+              albums: []
             });
           })
           .catch(err => { console.log("Error:", err); });
@@ -243,9 +280,9 @@ class Discover extends React.Component {
       case "Album":
         lastFMService.getTopTracksByAlbum(selectedOption.value)
           .then(res => {
-            console.log(res.data.results);
             this.setState({
-              albums: res.data.results.albummatches.album
+              albums: res.data.results.albummatches.album,
+              tracks: []
             });
           })
           .catch(err => { console.log("Error:", err); });
@@ -256,7 +293,8 @@ class Discover extends React.Component {
         lastFMService.getTopTracksByCountry(selectedOption.value)
           .then(res => {
             this.setState({
-              tracks: res.data.tracks.track
+              tracks: res.data.tracks.track,
+              albums: []
             });
           })
           .catch(err => { console.log("Error:", err); });

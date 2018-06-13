@@ -4,7 +4,13 @@ const API_KEY = process.env.REACT_APP_LASTFM_API_KEY;
 
 const getTrackTags = track => {
     return(
-        axios.get(`http://ws.audioscrobbler.com/2.0/?method=track.gettoptags&artist=${track.artist.name}&track=${track.name}&api_key=${API_KEY}&format=json`)
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=track.gettoptags&artist=${track.artist.name || track.artist}&track=${track.name}&api_key=${API_KEY}&format=json`)
+    );
+}
+
+const getAlbumTags = album => {
+    return(
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=album.gettoptags&artist=${album.artist}&album=${album.name}&api_key=${API_KEY}&format=json`)
     );
 }
 
@@ -56,6 +62,7 @@ const getTopTracksByCountry = (country, page = 1) => {
 }
 
 export default {
+    getAlbumTags,
     getTrackTags,
     getTopTracks,
     getTopArtists,

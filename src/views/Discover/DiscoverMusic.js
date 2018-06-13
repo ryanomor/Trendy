@@ -24,6 +24,10 @@ class MusicSection extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({ favorited: [] });
+  }
+
   toggleIconColor = index => {
     let { favorited } = this.state;
     const { addFav, deleteFav } = this.props;
