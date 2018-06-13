@@ -38,4 +38,10 @@ public class Favorite {
 
     @Column(name = "IMG")
     private String img;
+
+    @Column(name = "URL")
+    private String url;
+
+    @Column(name = "TAGS")
+    private String tags;
 }

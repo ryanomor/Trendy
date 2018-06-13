@@ -24,12 +24,13 @@ class Home extends React.Component {
       super();
       this.state = {
           tracks: [],
-          currPage: 1
+          currPage: 1,
+          // pages: 
       }
   }
 
   componentDidMount() {
-    lastFMService.getTopTracks()
+    lastFMService.getTopTracks(this.state.currPage, 12) // 12 is the limit of objects from the Db
       .then(res => {
           console.log(res.data.tracks);
           this.setState({
@@ -37,21 +38,36 @@ class Home extends React.Component {
           });
       })
       .catch(err => {
-          console.log("Error:", err);
+          console.log("Error:", err); 
       });
   }
 
   handleClick = number => {
     let { currPage } = this.state;
-    if (number === "PREV" && currPage > 1) {
+
+    if (number === 0 && currPage > 1) { // the index of the PREV and NEXT buttons are 0 and 6 respectively
       currPage--;
-      this.setState({ currPage });
-    } else if (number === "NEXT" && currPage < 5) {
+    } else if (number === 6 && currPage < 5) {
       currPage++;
-      this.setState({ currPage });
-    } else {
-      this.setState({ currPage: number });
+    } else if (number !== 0 && number !== 6) {
+      currPage = number;
+    } else if (number === 6 && currPage === 5) {
+      return;
+    } else if (number === 0 && currPage === 1) {
+      return;
     }
+
+    lastFMService.getTopTracks(currPage, 12) // 12 is the limit of objects from the Db
+      .then(res => {
+          console.log(res.data.tracks);
+          this.setState({
+              tracks: res.data.tracks.track,
+              currPage
+          });
+      })
+      .catch(err => {
+          console.log("Error:", err); 
+      });
   }
 
   render() {
@@ -92,7 +108,11 @@ class Home extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
-            <MusicSection activePage={currPage} tracks={tracks} togglePage={this.handleClick}/>
+            <MusicSection 
+              tracks={tracks} 
+              activePage={currPage} 
+              togglePage={this.handleClick}
+            />
             <UserSection />
           </div>
         </div>

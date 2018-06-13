@@ -28,7 +28,7 @@ function Pagination({ ...props }) {
               </Button>
             ) : (
               <Button
-                onClick={e => onClick(prop.text)}
+                onClick={e => onClick(key)}
                 className={paginationLink}
               >
                 {prop.text}

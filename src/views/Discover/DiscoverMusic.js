@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import dbService from "services/dbService";
-import lastFMService from "services/lastFMService";
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 // material-ui components
@@ -13,6 +11,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import Card from "components/Card/Card.jsx";
+import Paginations from "components/Pagination/Pagination.jsx";
 import IconButton from "components/CustomButtons/IconButton.jsx";
 
 import userStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
@@ -27,65 +26,21 @@ class MusicSection extends React.Component {
 
   toggleIconColor = index => {
     let { favorited } = this.state;
+    const { addFav, deleteFav } = this.props;
 
     if (favorited[index] === "rose") {
       favorited[index] = "primary";
-      this.deleteFav(index);
+      deleteFav(index);
       this.setState({ favorited });
     } else {
       favorited[index] = "rose";
-      this.addFav(index);
+      addFav(index);
       this.setState({ favorited });
     }
   }
-
-  addFav = index => {
-    const userId = JSON.parse(localStorage.getItem("user")).id;
-    const track = this.props.tracks[index];
-    // const trackTags = lastFMService.getTrackTags(track).then(res => {
-    //   console.log(res.data.toptags.tag);
-    // });
-
-    const song = {
-      userId,
-      song: track.name,
-      artist: track.artist.name,
-      img: track.image[2]["#text"],
-      // tags: trackTags.join(",")
-    };
-
-    dbService.addFave(song)
-      .then(res => {
-        console.log("Added to user's faves!", res.data);
-      })
-      .catch(err => {
-        console.log("Error:", err);
-      })
-  }
-
-  deleteFav = (index) => {
-    const track = this.props.tracks[index];
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    dbService.getUsersFavorites(user)
-      .then(res => {
-        const targetTrack = res.data.find(favorite => favorite.song === track.name);
-        console.log(targetTrack);
-        dbService.deleteFavorite(targetTrack)
-          .then(res => {
-            console.log("Successfully deleted from user's faves!", res.data);
-          })
-          .catch(err => {
-            console.log("Error:", err);
-          })
-      })
-      .catch(err => {
-        console.log("Error:", err)
-      });
-  }
     
   render() {
-    const { classes, tracks } = this.props;
+    const { classes, albums, tracks, activePage, togglePage } = this.props;
     const { favorited } = this.state;
     const imageClasses = classNames(
       classes.imgRaised,
@@ -95,10 +50,52 @@ class MusicSection extends React.Component {
     
     return (
       <div className={classes.section}>
+        <Paginations
+          color="info"
+          pages={[
+            { text: "PREV" },
+            { active: activePage === 1, text: 1 },
+            { active: activePage === 2, text: 2 },
+            { active: activePage === 3, text: 3 },
+            { active: activePage === 4, text: 4 },
+            { active: activePage === 5, text: 5 },
+            { text: "NEXT" }
+          ]}
+          onClick={togglePage}
+        />
         <GridContainer justify="center">
-          {tracks.map((track, idx) =>
+          {albums.length > 0 ?
+            albums.map((album, idx) =>
+              <GridItem key={idx} xs={12} sm={12} md={4}>
+                  <Card plain>
+                  <Link to={album.url} target="_blank">
+                  <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+                    <img src={album.image[2]['#text']} alt={`album-${idx}`} className={imageClasses} />
+                  </GridItem>
+                    <h4 className={classes.cardTitle}>
+                      {album.name}
+                      <br />
+                      <small className={classes.smallTitle}> {album.artist} </small>
+                    </h4>
+                    </Link>
+                    <CardBody>
+                      <IconButton 
+                        color={favorited[idx] ? favorited[idx] : "primary" } 
+                        onClick={e => { this.toggleIconColor(idx); }}
+                      >
+                        <Favorite className={classes.icons} />
+                      </IconButton>
+                    </CardBody>
+                  </Card>
+              </GridItem>
+            )
+          : ""}
+
+          {tracks.length > 0 ?
+            tracks.map((track, idx) =>
             <GridItem key={idx} xs={12} sm={12} md={4}>
                 <Card plain>
+                <Link to={track.url} target="_blank">
                 <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
                   <img src={track.image[2]['#text']} alt={`top-track-${idx}`} className={imageClasses} />
                 </GridItem>
@@ -107,21 +104,26 @@ class MusicSection extends React.Component {
                     <br />
                     <small className={classes.smallTitle}> {track.artist.name} </small>
                   </h4>
+                  </Link>
                   <CardBody>
-                  <p className={classes.description}>
-                    {track.listeners} listeners <br />
-                    {track.playcount} plays
-                  </p>
-                  <IconButton 
-                    color={favorited[idx] ? favorited[idx] : "primary" } 
-                    onClick={e => { this.toggleIconColor(idx); }}
-                  >
-                    <Favorite className={classes.icons} />
-                  </IconButton>
+                    <Link to={track.url} target="_blank">
+                      <p className={classes.description}>
+                        {track.listeners} listeners <br />
+                        {track.playcount} plays
+                      </p>
+                    </Link>
+                    <IconButton 
+                      color={favorited[idx] ? favorited[idx] : "primary" } 
+                      onClick={e => { this.toggleIconColor(idx); }}
+                    >
+                      <Favorite className={classes.icons} />
+                    </IconButton>
                   </CardBody>
                 </Card>
             </GridItem>
-          )}
+          ) 
+          : ""}
+
         </GridContainer>
       </div>
     );

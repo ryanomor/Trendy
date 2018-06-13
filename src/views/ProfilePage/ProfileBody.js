@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Users from "utils/Users";
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -100,21 +100,23 @@ class ProfileBody extends Component {
                                             <GridContainer justify="center">
                                             {favorites.length < 1 ? 
                                                 "You don't have any favorites yet" :
-                                                favorites.map((Favorite, idx) =>
+                                                favorites.map((favorite, idx) =>
                                                     <GridItem key={idx} xs={12} sm={12} md={4}>
                                                         <Card plain>
                                                             <CardBody>
+                                                                <Link to={favorite.url} style={{"color": "inherit"}}>
                                                                 <CardBody>
                                                                 {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
-                                                                <img src={Favorite.img} alt={`Favorite-${idx}`} className={imageClasses} />
+                                                                <img src={favorite.img} alt={`favorite-${idx}`} className={imageClasses} />
                                                                 </CardBody>
                                                                 {/* </GridItem> */}
                                                                 {/* <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}> */}
                                                                 <h4 className={classes.cardTitle}>
-                                                                    {Favorite.song}
+                                                                    {favorite.song}
                                                                     <br />
-                                                                    <small className={classes.smallTitle}> {`${Favorite.artist}`} </small>
+                                                                    <small className={classes.smallTitle}> {`${favorite.artist}`} </small>
                                                                 </h4>
+                                                                </Link>
                                                                 <Badge color="danger" style={{"cursor": "pointer"}} onClick={e => unFavorite(idx)}> remove </Badge>
                                                                 {/* </GridItem> */}
                                                             </CardBody>

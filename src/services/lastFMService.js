@@ -15,24 +15,43 @@ const getTopArtists = () => {
     );
 }
 
-const getTopTracks = () => {
-    const randPage = Math.round(Math.random() * 50);
+const getTopTracks = (page = 1, limit = "") => {
+    // const randPage = Math.round(Math.random() * 50);
+    console.log("page:", page, "limit:", limit);
+    const pageLimit = limit ? `&limit=${limit}` : "";
     return(
-        axios.get(`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&page=${randPage}&api_key=${API_KEY}&format=json`)
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks${pageLimit}&page=${page}&api_key=${API_KEY}&format=json`)
     );
 }
 
-const getTopTracksByGenre = (genre) => {
+const getTopTracksByGenre = (genre, page = 1) => {
     const randPage = Math.round(Math.random() * 50);
     return(
-        axios.get(`http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=${genre}&page=${randPage}&api_key=${API_KEY}&format=json`)
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=${genre}&page=${page}&api_key=${API_KEY}&format=json`)
     );
 }
 
-const getCountriesTopTracks = (country) => {
-    const randPage = Math.round(Math.random() * 50);
+const getTopTracksByArtist = (artist, page = 1) => {
     return(
-        axios.get(`http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${country}&page=${randPage}&api_key=${API_KEY}&format=json`)
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${artist}&page=${page}&api_key=${API_KEY}&format=json`)
+    );
+}
+
+const getTopTracksByTrack = (track, page = 1)=> {
+    return(
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${track}&page=${page}&api_key=${API_KEY}&format=json`)
+    );
+}
+
+const getTopTracksByAlbum = (album, page = 1) => {
+    return(
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=album.search&album=${album}&page=${page}&api_key=${API_KEY}&format=json`)
+    );
+}
+
+const getTopTracksByCountry = (country, page = 1) => {
+    return(
+        axios.get(`http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${country}&page=${page}&api_key=${API_KEY}&format=json`)
     );
 }
 
@@ -41,5 +60,8 @@ export default {
     getTopTracks,
     getTopArtists,
     getTopTracksByGenre,
-    getCountriesTopTracks
+    getTopTracksByTrack,
+    getTopTracksByAlbum,
+    getTopTracksByArtist,
+    getTopTracksByCountry
 }

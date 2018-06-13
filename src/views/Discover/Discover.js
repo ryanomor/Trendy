@@ -1,5 +1,7 @@
 import React from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
+import Genres from "utils/Genres";
+import dbService from "services/dbService";
 import lastFMService from './../../services/lastFMService';
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -21,8 +23,13 @@ import ProfileNavbar from "../ProfilePage/ProfileNavbar";
 class Discover extends React.Component {
   constructor() {
       super();
+
+      this.options = ["Genre", "Artist", "Track", "Album", "Country"];
+
       this.state = {
         tracks: [],
+        albums: [],
+        currPage: 1,
         selectedOption: {
           option: "",
           value: ""
@@ -33,18 +40,246 @@ class Discover extends React.Component {
   componentDidMount() {
     lastFMService.getTopTracks()
         .then(res => {
-            console.log(res.data.tracks);
-            this.setState({
-                tracks: res.data.tracks.track
-            });
+          this.setState({
+              tracks: res.data.tracks.track
+          });
         })
         .catch(err => {
             console.log("Error:", err);
         })
   }
 
+  handleClick = number => {
+    let { currPage, selectedOption } = this.state;
+    selectedOption.value = selectedOption.value.toLowerCase();
+
+    if (number === 0 && currPage > 1) {
+      currPage--;
+    } else if (number === 6 && currPage < 5) {
+      currPage++;
+    } else if (number !== 0 && number !== 6) {
+      currPage = number;
+    }
+
+    switch (selectedOption.option) {
+      case "Genre":
+        lastFMService.getTopTracksByGenre(selectedOption.value, currPage)
+          .then(res => {
+            this.setState({
+              tracks: res.data.tracks.track,
+              currPage
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+      
+      case "Artist":
+        lastFMService.getTopTracksByArtist(selectedOption.value, currPage)
+          .then(res => {
+            this.setState({
+              tracks: res.data.toptracks.track,
+              currPage
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+
+      case "Track":
+        lastFMService.getTopTracksByTrack(selectedOption.value)
+          .then(res => {
+            this.setState({
+              albums: res.data.results.trackmatches.track
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+      return;
+
+      case "Album":
+        lastFMService.getTopTracksByAlbum(selectedOption.value, currPage)
+          .then(res => {
+            console.log(res.data.results);
+            this.setState({
+              albums: res.data.results.albummatches.album,
+              currPage
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+
+      case "Country":
+        lastFMService.getTopTracksByCountry(selectedOption.value, currPage)
+          .then(res => {
+            this.setState({
+              tracks: res.data.tracks.track,
+              currPage
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+    
+      default:
+        lastFMService.getTopTracks(currPage)
+          .then(res => {
+              this.setState({
+                  tracks: res.data.tracks.track,
+                  currPage
+              });
+          })
+          .catch(err => {
+              console.log("Error:", err); 
+        });
+        return;
+    }
+  }
+
+  addFav = index => {
+    const userId = JSON.parse(localStorage.getItem("user")).id;
+    const track = this.state.tracks[index];
+    let trackTags;
+    
+    lastFMService.getTrackTags(track)
+      .then(res => {
+        if (!res.data.error) {
+          trackTags = res.data.toptags.tag
+            .filter(tag => !!Genres[tag.name.toLowerCase()])
+            .map(tag => tag.name.toLowerCase());
+        }
+        
+        const song = {
+          userId,
+          song: track.name,
+          artist: track.artist.name,
+          img: track.image[2]["#text"],
+          url: track.url,
+          tags: trackTags.join(",")
+        };
+    
+        dbService.addFave(song)
+          .then(res => {
+            console.log("Added to user's faves!", res.data);
+          })
+          .catch(err => {
+            console.log("Error:", err);
+          })
+      })
+      .catch(err => { console.log("Error:", err) });
+  }
+
+  deleteFav = index => {
+    const track = this.state.tracks[index];
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    dbService.getUsersFavorites(user)
+      .then(res => {
+        const targetTrack = res.data.find(favorite => favorite.song === track.name);
+        
+        dbService.deleteFavorite(targetTrack)
+          .then(res => {
+            console.log("Successfully deleted from user's faves!", res.data);
+          })
+          .catch(err => {
+            console.log("Error:", err);
+          })
+      })
+      .catch(err => {
+        console.log("Error:", err)
+      });
+  }
+
+  inputChange = e => {
+    const { selectedOption } = this.state;
+    const { name, value } = e.target;
+
+    selectedOption[name] = value;
+    console.log(selectedOption);
+
+    this.setState({ selectedOption })
+  }
+
+  submitSearch = e => {
+    e.preventDefault();
+    const { selectedOption } = this.state;
+    selectedOption.value = selectedOption.value.toLowerCase();
+
+    switch (selectedOption.option) {
+      case "Genre":
+        lastFMService.getTopTracksByGenre(selectedOption.value)
+          .then(res => {
+            this.setState({
+              tracks: res.data.tracks.track
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+      
+      case "Artist":
+        lastFMService.getTopTracksByArtist(selectedOption.value)
+          .then(res => {
+            this.setState({
+              tracks: res.data.toptracks.track
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+
+      case "Track":
+        lastFMService.getTopTracksByTrack(selectedOption.value)
+          .then(res => {
+            this.setState({
+              albums: res.data.results.trackmatches.track
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+      return;
+
+      case "Album":
+        lastFMService.getTopTracksByAlbum(selectedOption.value)
+          .then(res => {
+            console.log(res.data.results);
+            this.setState({
+              albums: res.data.results.albummatches.album
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+
+      case "Country":
+        lastFMService.getTopTracksByCountry(selectedOption.value)
+          .then(res => {
+            this.setState({
+              tracks: res.data.tracks.track
+            });
+          })
+          .catch(err => { console.log("Error:", err); });
+
+        return;
+    
+      default:
+        return;
+    }
+    
+  }
+
   renderDicoverMusicComponent = () => {
-    return <DiscoverMusic tracks={this.state.tracks} />
+    return (
+      <DiscoverMusic 
+        tracks={this.state.tracks}
+        albums={this.state.albums}
+        activePage={this.state.currPage}
+        togglePage={this.handleClick} 
+        addFav={this.addFav}
+        deleteFav={this.deleteFav}
+      />
+    );
   }
 
   render() {
@@ -52,7 +287,7 @@ class Discover extends React.Component {
     user = user ? JSON.parse(user) : "";
 
     if (!user) {
-        return <Redirect to="/" />
+      return <Redirect to="/" />
     }
 
     const { classes, logout } = this.props;
@@ -71,10 +306,15 @@ class Discover extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
-          <DiscoverSearch />
-          <Switch>
-            <Route to="/discover" render={this.renderDicoverMusicComponent} />
-          </Switch>
+            <DiscoverSearch 
+              option={this.state.selectedOption}
+              handleChange={this.inputChange}
+              listOptions={this.options}
+              handleSubmit={this.submitSearch}
+            />
+            <Switch>
+              <Route to="/discover" render={this.renderDicoverMusicComponent} />
+            </Switch>
           </div>
         </div>
         <Footer />

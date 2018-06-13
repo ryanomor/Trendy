@@ -42,7 +42,7 @@ class Signup extends React.Component {
       () => {
         this.setState({ cardAnimaton: "" });
       },
-      700
+      500
     );
   }
 

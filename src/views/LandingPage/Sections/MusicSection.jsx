@@ -16,12 +16,19 @@ import userStyle from "assets/jss/material-kit-react/views/landingPageSections/t
 class MusicSection extends React.Component {
   render() {
     const { classes, tracks, activePage, togglePage } = this.props;
-    // const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+    
     const imageClasses = classNames(
       classes.imgRaised,
       classes.imgRoundedCircle,
       classes.imgFluid
     );
+
+    let trimmedTrackList;
+    if ((activePage - 1) * 11 > tracks.length) {
+      trimmedTrackList = tracks.slice(0, 12);
+    } else {
+      trimmedTrackList = tracks.slice(((activePage - 1) * 11), ((activePage - 1) * 11 + 12));
+    }
     
     return (
       <div className={classes.section}>
@@ -30,13 +37,26 @@ class MusicSection extends React.Component {
             <h2 className={classes.title}> Vibe to some new music </h2>
             <h5 className={classes.description}>
               Find new music by your favorite artists or discover some fresh tunes. <br />
-              Save them to your favorites to listen to them later!
+              Save them to your favorites for later!
             </h5>
           </GridItem>
         </GridContainer>
         <div className={classes.section}>
+          <Paginations
+            color="info"
+            pages={[
+              { text: "PREV" },
+              { active: activePage === 1, text: 1 },
+              { active: activePage === 2, text: 2 },
+              { active: activePage === 3, text: 3 },
+              { active: activePage === 4, text: 4 },
+              { active: activePage === 5, text: 5 },
+              { text: "NEXT" }
+            ]}
+            onClick={togglePage}
+          />
           <GridContainer justify="center">
-            {tracks.slice(0, 12).map((track, idx) =>
+            {trimmedTrackList.map((track, idx) =>
             <GridItem key={idx} xs={12} sm={12} md={4}>
               <Link key={idx} to="/register">
                   <Card plain>
@@ -58,19 +78,6 @@ class MusicSection extends React.Component {
               </Link>
             </GridItem>
             )}
-            <Paginations
-                  color="info"
-                  pages={[
-                    { text: "PREV" },
-                    { active: activePage === 1, text: 1 },
-                    { active: activePage === 2, text: 2 },
-                    { active: activePage === 3, text: 3 },
-                    { active: activePage === 4, text: 4 },
-                    { active: activePage === 5, text: 5 },
-                    { text: "NEXT" }
-                  ]}
-                  onClick={togglePage}
-                />
           </GridContainer>
         </div>
       </div>

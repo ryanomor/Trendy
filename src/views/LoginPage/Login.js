@@ -38,7 +38,7 @@ class Login extends React.Component {
       () => {
         this.setState({ cardAnimaton: "" });
       },
-      700
+      500
     );
   }
 
@@ -73,6 +73,8 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const { user } = this.state;
+    user.email = /@/g[Symbol.replace](user.email, "%40");
+    console.log(user.email);
 
     this.props.setUser(user);
   }
