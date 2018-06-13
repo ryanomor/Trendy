@@ -45,7 +45,7 @@ class ProfileNavbar extends Component {
                         </ListItem>
                         <ListItem className={classes.listItem}>
                             <IconButton
-                                href="#pablo"
+                                href="#"
                                 className={classes.notificationNavLink}
                                 onClick={e => e.preventDefault()}
                                 color="rose"
