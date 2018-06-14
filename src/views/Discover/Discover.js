@@ -145,7 +145,7 @@ class Discover extends React.Component {
 
     console.log("Track:", track.artist.name);
 
-    track.length > 0
+    tracks.length > 0
       ? lastFMService.getTrackTags(track)
           .then(res => {
             console.log("tags for track");
