@@ -1,7 +1,11 @@
 # Trendy App
 ![landing-page](public/LandingPage.gif)  
+Landing page flow  
 ![login-flow](public/LoginFlow.gif)  
+Login flow  
 ![sign-out](public/RemoveSignOutFlow.gif)  
+Remove feature & Sign out flow  
+
 ## Quick start  
 Make sure Docker and NPM are installed on your local computer  
 Obtain an API key from [lastfm](https://www.last.fm/api/account/create)  
