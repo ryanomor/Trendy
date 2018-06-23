@@ -8,14 +8,18 @@ Here are some examples of different user flows.
 
 ## Landing Page
 The landing page gives an introduction of how the app works. Users can browse music, but can not access all of the features of the app until they sign up or login.  
+  
 ![landing-page](public/LandingPage.gif)  
   
 ## Login
+The user either signs up or logs in and is then redirected to their progile page.  
+  
 ![login-flow](public/LoginFlow.gif)  
-Login flow  
+  
 ## Sign out
-![sign-out](public/RemoveSignOutFlow.gif)  
-Remove feature & Sign out flow  
+If a user is no longer interested in a song they can remove it from their favorites. They can also do the same to a user in their friends list if they no longer feel friendly with the user.  
+  
+![sign-out](public/RemoveSignOutFlow.gif)    
 
 ## Quick start  
 Make sure Docker and NPM are installed on your local computer  
