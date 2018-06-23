@@ -1,4 +1,10 @@
 # Trendy App
+
+Trendy is a web app built in a React frontend using Google's Material-UI library and a Java backend built in Spring Boot.  
+Trendy is a social media app that allows users to discover new music and add them to their profile. The more new music users discover and add, the more likely they will get recommended to other users who share similar interests in music. And users will be recommended events based on the music in their favorites.  
+Here are some examples of different user flows.
+
+## Landing Page
 ![landing-page](public/LandingPage.gif)  
 Landing page flow  
 ![login-flow](public/LoginFlow.gif)  
