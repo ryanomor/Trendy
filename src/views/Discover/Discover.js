@@ -17,6 +17,7 @@ import discoverPageStyle from "assets/jss/material-kit-react/views/landingPage.j
 
 // Sections for this page
 import DiscoverMusic from "./DiscoverMusic";
+import DiscoverFriends from "./DiscoverFriends";
 import DiscoverSearch from "./DiscoverSearch";
 import ProfileNavbar from "../ProfilePage/ProfileNavbar";
 
@@ -34,6 +35,7 @@ class Discover extends React.Component {
           option: "",
           value: ""
         },
+        friendsFaves: []
       }
   }
 
@@ -65,6 +67,7 @@ class Discover extends React.Component {
       case "Genre":
         lastFMService.getTopTracksByGenre(selectedOption.value, currPage)
           .then(res => {
+            console.log(res.data);
             this.setState({
               tracks: res.data.tracks.track,
               currPage
@@ -77,6 +80,7 @@ class Discover extends React.Component {
       case "Artist":
         lastFMService.getTopTracksByArtist(selectedOption.value, currPage)
           .then(res => {
+            console.log('Res:', res.data);
             this.setState({
               tracks: res.data.toptracks.track,
               currPage
@@ -89,6 +93,7 @@ class Discover extends React.Component {
       case "Track":
         lastFMService.getTopTracksByTrack(selectedOption.value)
           .then(res => {
+            console.log(res.data);
             this.setState({
               albums: res.data.results.trackmatches.track,
               currPage
@@ -101,6 +106,7 @@ class Discover extends React.Component {
       case "Album":
         lastFMService.getTopTracksByAlbum(selectedOption.value, currPage)
           .then(res => {
+            console.log(res.data);
             this.setState({
               albums: res.data.results.albummatches.album,
               currPage
@@ -113,6 +119,7 @@ class Discover extends React.Component {
       case "Country":
         lastFMService.getTopTracksByCountry(selectedOption.value, currPage)
           .then(res => {
+            console.log(res.data);
             this.setState({
               tracks: res.data.tracks.track,
               currPage
@@ -125,6 +132,7 @@ class Discover extends React.Component {
       default:
         lastFMService.getTopTracks(currPage)
           .then(res => {
+            console.log(res.data);
               this.setState({
                   tracks: res.data.tracks.track,
                   currPage
@@ -149,6 +157,7 @@ class Discover extends React.Component {
       ? lastFMService.getTrackTags(track)
           .then(res => {
             console.log("tags for track");
+            console.log(res.data);
             if (!res.data.error) {
               tags = res.data.toptags.tag
                 .filter(tag => !!Genres[tag.name.toLowerCase()])
@@ -167,6 +176,13 @@ class Discover extends React.Component {
             dbService.addFave(song)
               .then(res => {
                 console.log("Added to user's faves!", res.data);
+                dbService
+                  .getFavesByArtist(track.artist.name || track.artist)
+                  .then(res => {
+                    console.log('Got matching Faves!', res.data);
+                    this.setState({ friendsFaves: res.data });
+                  })
+                  .catch(err => console.log('Error:', err));
               })
               .catch(err => {
                 console.log("Error:", err);
@@ -194,6 +210,13 @@ class Discover extends React.Component {
     
         dbService.addFave(song)
           .then(res => {
+            dbService
+              .getFavesByArtist(track.artist.name || track.artist)
+              .then(res => {
+                console.log('Got matching Faves!', res.data);
+                this.setState({ friendsFaves: res.data });
+              })
+              .catch(err => console.log('Error:', err));
             console.log("Added to user's faves!", res.data);
           })
           .catch(err => {
@@ -243,6 +266,7 @@ class Discover extends React.Component {
       case "Genre":
         lastFMService.getTopTracksByGenre(selectedOption.value)
           .then(res => {
+            console.log(res.data);
             this.setState({
               tracks: res.data.tracks.track,
               albums: []
@@ -255,6 +279,7 @@ class Discover extends React.Component {
       case "Artist":
         lastFMService.getTopTracksByArtist(selectedOption.value)
           .then(res => {
+            console.log(res.data);
             this.setState({
               tracks: res.data.toptracks.track,
               albums: []
@@ -267,6 +292,7 @@ class Discover extends React.Component {
       case "Track":
         lastFMService.getTopTracksByTrack(selectedOption.value)
           .then(res => {
+            console.log(res.data);
             console.log(res.data.results.trackmatches.track);
             this.setState({
               tracks: res.data.results.trackmatches.track,
@@ -280,6 +306,7 @@ class Discover extends React.Component {
       case "Album":
         lastFMService.getTopTracksByAlbum(selectedOption.value)
           .then(res => {
+            console.log(res.data);
             this.setState({
               albums: res.data.results.albummatches.album,
               tracks: []
@@ -292,6 +319,7 @@ class Discover extends React.Component {
       case "Country":
         lastFMService.getTopTracksByCountry(selectedOption.value)
           .then(res => {
+            console.log(res.data);
             this.setState({
               tracks: res.data.tracks.track,
               albums: []
@@ -327,7 +355,7 @@ class Discover extends React.Component {
     if (!user) {
       return <Redirect to="/" />
     }
-
+    const { friendsFaves } = this.state;
     const { classes, logout } = this.props;
     
     return (
@@ -344,6 +372,7 @@ class Discover extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
+            {friendsFaves.length > 0 ? <DiscoverFriends friendsFaves={friendsFaves} /> : ''}
             <DiscoverSearch 
               option={this.state.selectedOption}
               handleChange={this.inputChange}

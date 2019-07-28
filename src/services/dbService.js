@@ -17,6 +17,7 @@ const getUsers = user => {
 };
 
 const getUserById = user => {
+    console.log('Id:', user.id);
     return axios.get(`http://localhost:8080/users/${user.id}`);
 };
 
@@ -36,6 +37,10 @@ const getUsersFavorites = user => {
     return axios.get(`http://localhost:8080/faves/${user.id}`);
 };
 
+const getFavesByArtist = artist => {
+    return axios.get(`http://localhost:8080/faves/artist/${artist}`);
+};
+
 const deleteUsersFriend = friend => {
     return axios.delete(`http://localhost:8080/friends/${friend.id}`); // ID of relation, not the actual friend or user id
 };
@@ -51,6 +56,7 @@ export default {
     getUsers,
     getUserById,
     getUserByEmail,
+    getFavesByArtist,
     getUsersFriends,
     getFriendById,
     getUsersFavorites,

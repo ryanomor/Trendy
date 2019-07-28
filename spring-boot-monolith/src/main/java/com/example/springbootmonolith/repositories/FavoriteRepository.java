@@ -6,5 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface FavoriteRepository extends CrudRepository<Favorite, Long> {
+    List<Favorite> findByartist(String artist);  // Can also be Iterable type
     List<Favorite> findByuserId(Long userId);  // Can also be Iterable type
 }

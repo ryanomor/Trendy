@@ -19,6 +19,11 @@ public class FavoritesController {
 
 //    @CrossOrigin(origins = "http://localhost:3000")
 
+    @GetMapping("/faves/artist/{artist}")
+    public List<Favorite> getFavesByArtist(@PathVariable String artist) {
+        return favoriteRepository.findByartist(artist);
+    }
+
     @GetMapping("/faves/{userId}")
     public List<Favorite> getFavesByUserId(@PathVariable Long userId) {
         return favoriteRepository.findByuserId(userId);
